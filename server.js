@@ -58,10 +58,10 @@ app.post('/webhook', async (req, res) => {
     }
 });
 
-app.use(express.static(path.join(__dirname, '../client/client')));
+app.use(express.static(path.join(__dirname, '../../client/client/dist')));
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../client/client', 'index.html'));
+    res.sendFile(path.join(__dirname, '../../client/client/dist', 'index.html'));
 });
 
 const server = https.createServer(options, app);
@@ -77,5 +77,6 @@ server.on('upgrade', (request, socket, head) => {
         });
     }
 });
+
 
 
