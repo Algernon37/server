@@ -58,10 +58,10 @@ app.post('/webhook', async (req, res) => {
     }
 });
 
-app.use(express.static(path.join(__dirname, '../client/client/dist')));
+app.use(express.static(path.join(__dirname, '../client/client')));
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../client/client/dist', 'index.html'));
+    res.sendFile(path.join(__dirname, '../client/client', 'index.html'));
 });
 
 const server = https.createServer(options, app);
