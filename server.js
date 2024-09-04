@@ -1,3 +1,5 @@
+const fs = require('fs');
+const https = require('https');
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
@@ -51,14 +53,18 @@ app.post('/webhook', async (req, res) => {
     }
 });
 
-const distPath = path.resolve(__dirname, '../../client/client/dist');
-app.use(express.static(distPath));
+app.use(express.static(path.join(__dirname, '../client/client/dist')));
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(distPath, 'index.html'));
+    res.sendFile(path.join(__dirname, '../client/client/dist', 'index.html'));
 });
 
-const server = app.listen(port, () => {
+const server = https.createServer({
+    key: fs.readFileSync('/path/to/your/private-key.pem'),
+    cert: fs.readFileSync('/path/to/your/certificate.pem')
+}, app);
+
+server.listen(port, () => {
     console.log(`Express сервер запущен на порту ${port}`);
 });
 
