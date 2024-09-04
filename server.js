@@ -10,7 +10,7 @@ const telegramToken = '7376492807:AAH8_faU0KO8Jhb3h69K_YvlhDpphZ77_Rk';
 const telegramApiUrl = `https://api.telegram.org/bot${telegramToken}`;
 
 const wsServer = new WebSocket.Server({ noServer: true });
-
+console.log('Путь к директории dist:', path.join(__dirname, '../client/client/dist'));
 wsServer.on('connection', (ws) => {
     console.log('WebSocket клиент подключен');
 
