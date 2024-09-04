@@ -66,8 +66,8 @@ app.get('/', (req, res) => {
 
 const server = https.createServer(options, app);
 
-server.listen(port, () => {
-    console.log(`HTTPS сервер запущен на порту ${port}`);
+server.listen(443, () => {
+    console.log(`HTTPS сервер запущен на порту 443`);
 });
 
 server.on('upgrade', (request, socket, head) => {
