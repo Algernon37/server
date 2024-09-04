@@ -59,11 +59,6 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../client/client/dist', 'index.html'));
 });
 
-const server = https.createServer({
-    key: fs.readFileSync('/path/to/your/private-key.pem'),
-    cert: fs.readFileSync('/path/to/your/certificate.pem')
-}, app);
-
 server.listen(port, () => {
     console.log(`Express сервер запущен на порту ${port}`);
 });
