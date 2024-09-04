@@ -3,11 +3,18 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const axios = require('axios');
 const WebSocket = require('ws');
+const fs = require('fs');
+const https = require('https');
 
 const app = express();
 const port = process.env.PORT || 3000;
 const telegramToken = '7376492807:AAH8_faU0KO8Jhb3h69K_YvlhDpphZ77_Rk';
 const telegramApiUrl = `https://api.telegram.org/bot${telegramToken}`;
+
+const options = {
+    key: fs.readFileSync('/etc/letsencrypt/live/taskforjob.ru-0001/privkey.pem'),
+    cert: fs.readFileSync('/etc/letsencrypt/live/taskforjob.ru-0001/fullchain.pem')
+};
 
 const wsServer = new WebSocket.Server({ noServer: true });
 
@@ -51,16 +58,16 @@ app.post('/webhook', async (req, res) => {
     }
 });
 
-// Указываем абсолютный путь к папке dist
-const distPath = path.resolve(__dirname, '../../client/client/dist');
-app.use(express.static(distPath));
+app.use(express.static(path.join(__dirname, '../client/client/dist')));
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(distPath, 'index.html'));
+    res.sendFile(path.join(__dirname, '../client/client/dist', 'index.html'));
 });
 
-const server = app.listen(port, () => {
-    console.log(`Express сервер запущен на порту ${port}`);
+const server = https.createServer(options, app);
+
+server.listen(port, () => {
+    console.log(`HTTPS сервер запущен на порту ${port}`);
 });
 
 server.on('upgrade', (request, socket, head) => {
@@ -70,4 +77,5 @@ server.on('upgrade', (request, socket, head) => {
         });
     }
 });
+
 
