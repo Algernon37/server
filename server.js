@@ -10,7 +10,7 @@ const telegramToken = '7376492807:AAH8_faU0KO8Jhb3h69K_YvlhDpphZ77_Rk';
 const telegramApiUrl = `https://api.telegram.org/bot${telegramToken}`;
 
 const wsServer = new WebSocket.Server({ noServer: true });
-console.log('Путь к директории dist:', path.join(__dirname, '../client/client/dist'));
+
 wsServer.on('connection', (ws) => {
     console.log('WebSocket клиент подключен');
 
@@ -51,10 +51,11 @@ app.post('/webhook', async (req, res) => {
     }
 });
 
-app.use(express.static(path.join(__dirname, '../client/client/dist')));
+const distPath = path.resolve(__dirname, '../../client/client/dist');
+app.use(express.static(distPath));
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../client/client/dist', 'index.html'));
+    res.sendFile(path.join(distPath, 'index.html'));
 });
 
 const server = app.listen(port, () => {
@@ -68,3 +69,4 @@ server.on('upgrade', (request, socket, head) => {
         });
     }
 });
+
