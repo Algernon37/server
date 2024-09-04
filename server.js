@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const bodyParser = require('body-parser');
 const axios = require('axios');
 const WebSocket = require('ws');
@@ -27,10 +28,6 @@ wsServer.on('connection', (ws) => {
 
 app.use(bodyParser.json());
 
-app.get('/', (req, res) => {
-    res.send('Hello World!');
-});
-
 app.post('/webhook', async (req, res) => {
     try {
         const update = req.body;
@@ -52,6 +49,12 @@ app.post('/webhook', async (req, res) => {
         console.error('Ошибка при обработке запроса:', error);
         res.sendStatus(500);
     }
+});
+
+app.use(express.static(path.join(__dirname, '../client/client/dist')));
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/client/dist', 'index.html'));
 });
 
 const server = app.listen(port, () => {
